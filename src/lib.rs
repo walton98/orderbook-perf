@@ -1,8 +1,11 @@
+#![feature(linked_list_cursors)]
+pub mod list_book;
 pub mod order_book;
 pub mod rev_vec_book;
 pub mod vec_book;
 pub mod vec_deque_book;
 
+pub use crate::list_book::ListBook;
 pub use crate::order_book::{Order, OrderBook};
 pub use crate::rev_vec_book::RevVecBook;
 pub use crate::vec_book::VecBook;
@@ -61,5 +64,6 @@ mod tests {
         vec_book: VecBook,
         vec_deque_book: VecDequeBook,
         rev_vec_book: RevVecBook,
+        list_book: ListBook,
     }
 }
