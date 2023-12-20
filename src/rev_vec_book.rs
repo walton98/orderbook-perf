@@ -22,10 +22,6 @@ impl OrderBook for RevVecBook {
         self.orders.insert(new_pos, order);
     }
 
-    fn remove_order(&mut self, _order_id: u64) {
-        // TODO
-    }
-
     fn pop_front(&mut self) {
         self.orders.pop().unwrap();
     }

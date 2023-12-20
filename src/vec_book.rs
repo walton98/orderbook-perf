@@ -21,10 +21,6 @@ impl OrderBook for VecBook {
         self.orders.insert(new_pos, order);
     }
 
-    fn remove_order(&mut self, _order_id: u64) {
-        // TODO
-    }
-
     fn pop_front(&mut self) {
         self.orders.remove(0);
     }
