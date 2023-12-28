@@ -1,6 +1,8 @@
 mod dummy_book;
 mod order_gen;
 
+use std::any::type_name;
+
 use criterion::{criterion_group, criterion_main, Criterion};
 
 use order_book::{ListBook, Order, OrderBook, RevVecBook, VecBook, VecDequeBook};
@@ -20,36 +22,30 @@ fn pop_orders(book: &mut impl OrderBook, num_orders: usize) {
     }
 }
 
-fn criterion_benchmark(c: &mut Criterion) {
+fn benchmark<B: OrderBook>(c: &mut Criterion) {
     let mut order_gen = OrderGen::new();
 
-    macro_rules! book_tests {
-        ($($name:ident: $type:ty,)*) => {
-        $(
-            c.bench_function(&format!("{}: insert", stringify!($name)), |b| b.iter(|| {
-                insert_orders(&mut <$type>::new(), (&mut order_gen).take(1000));
-            }));
-            c.bench_function(&format!("{}: insert and match", stringify!($name)), |b| b.iter(|| {
-                let num_orders = 1000;
-                let mut book = <$type>::new();
-                insert_orders(&mut book, (&mut order_gen).take(num_orders));
-                pop_orders(&mut book, num_orders);
-            }));
-        )*
-        }
-    }
-    book_tests! {
-        vec: VecBook,
-        vec_deque: VecDequeBook,
-        rev_vec: RevVecBook,
-        list_book: ListBook,
-        dummy: DummyBook,
-    };
+    let mut group = c.benchmark_group(type_name::<B>());
+
+    group.bench_function(&format!("insert"), |b| {
+        b.iter(|| {
+            insert_orders(&mut B::new(), (&mut order_gen).take(1000));
+        })
+    });
+
+    group.bench_function(&format!("insert and match"), |b| {
+        b.iter(|| {
+            let num_orders = 1000;
+            let mut book = B::new();
+            insert_orders(&mut book, (&mut order_gen).take(num_orders));
+            pop_orders(&mut book, num_orders);
+        })
+    });
 }
 
-criterion_group! {
-    name = benches;
-    config = Criterion::default().significance_level(0.1).sample_size(250);
-    targets = criterion_benchmark
-}
-criterion_main!(benches);
+criterion_group!(vec_book, benchmark::<VecBook>);
+criterion_group!(vec_deque_book, benchmark::<VecDequeBook>);
+criterion_group!(rev_vec_book, benchmark::<RevVecBook>);
+criterion_group!(list_book, benchmark::<ListBook>);
+criterion_group!(dummy_book, benchmark::<DummyBook>);
+criterion_main!(vec_book, vec_deque_book);
