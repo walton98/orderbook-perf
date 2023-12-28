@@ -1,5 +1,7 @@
 # Order Book Benchmarks
 
+[![Order Book CI](https://github.com/walton98/orderbook-perf/actions/workflows/ci.yml/badge.svg)](https://github.com/walton98/orderbook-perf/actions/workflows/ci.yml)
+
 ```
 $ cargo +nightly bench
 
