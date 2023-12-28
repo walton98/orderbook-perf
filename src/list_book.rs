@@ -29,10 +29,6 @@ impl OrderBook for ListBook {
         cursor.insert_before(order);
     }
 
-    fn remove_order(&mut self, _order_id: u64) {
-        // TODO
-    }
-
     fn pop_front(&mut self) {
         self.orders.pop_front();
     }

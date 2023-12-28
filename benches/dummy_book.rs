@@ -13,10 +13,6 @@ impl OrderBook for DummyBook {
         black_box(order);
     }
 
-    fn remove_order(&mut self, order_id: u64) {
-        black_box(order_id);
-    }
-
     fn pop_front(&mut self) {}
 }
 
