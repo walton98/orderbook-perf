@@ -3,7 +3,7 @@ mod order_gen;
 
 use criterion::{criterion_group, criterion_main, Criterion};
 
-use order_book::{Order, OrderBook, RevVecBook, VecBook, VecDequeBook};
+use order_book::{ListBook, Order, OrderBook, RevVecBook, VecBook, VecDequeBook};
 
 use crate::dummy_book::DummyBook;
 use crate::order_gen::OrderGen;
@@ -42,6 +42,7 @@ fn criterion_benchmark(c: &mut Criterion) {
         vec: VecBook,
         vec_deque: VecDequeBook,
         rev_vec: RevVecBook,
+        list_book: ListBook,
         dummy: DummyBook,
     };
 }
